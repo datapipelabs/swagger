@@ -1,0 +1,367 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "datapipe",
+    "description": "This is the official REST API specification for datapipe, based on OpenAPI 3.0.",
+    "contact": {
+      "name": "Richard Sentino (Developer)",
+      "email": "richard@getdatapipe.com",
+      "url": "https://www.getdatapipe.com/contact"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.getdatapipe.com/v1",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "data",
+      "description": "Account Data"
+    },
+    {
+      "name": "version",
+      "description": "Version"
+    }
+  ],
+  "paths": {
+    "/data/{accountId}/{endpointId}": {
+      "get": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Returns account data",
+        "description": "Returns a JSON-formatted data",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Account ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "endpointId",
+            "in": "path",
+            "description": "Endpoint ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/DataResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "UserAuth": []
+          }
+        ]
+      }
+    },
+    "/data/{accountId}/{endpointId}/file": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Updates account's endpoint from a file",
+        "description": "Updates account's data and returns 200 status code on success. <br /><br />Supported file types: .csv, .json, .txt, .xml, .xlsx. <br /><br />Maximum file size: 5MB",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Account ID  - must be UUID format.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "endpointId",
+            "in": "path",
+            "description": "Endpoint ID  - must be UUID format.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "required": [
+                  "file"
+                ],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "description": "file types: CSV,XML,JSON,XLSX,PDF. File size: 5MB max",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/data/{accountId}/{endpointId}/sheet": {
+      "post": {
+        "tags": [
+          "data"
+        ],
+        "summary": "Updates account's endpoint with Google Sheet data",
+        "description": "",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "description": "Account ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "endpointId",
+            "in": "path",
+            "description": "Endpoint ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "sheetId": {
+                    "type": "string",
+                    "description": "Google Sheet ID"
+                  }
+                },
+                "required": [
+                  "sheetId"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/SuccessResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/version": {
+      "get": {
+        "tags": [
+          "version"
+        ],
+        "summary": "Returns the latest API version",
+        "security": [
+          {
+            "ApiKeyAuth": [],
+            "UserAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/VersionResponse"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DataResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {},
+            "example": [
+              {
+                "id": 0,
+                "country": "Australia"
+              },
+              {
+                "id": 1,
+                "country": "New Zealand"
+              }
+            ]
+          }
+        }
+      },
+      "VersionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "string",
+            "example": "1.2.0",
+            "pattern": "^\\d\\.\\d\\.\\d$"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Bad Request"
+          },
+          "statusCode": {
+            "type": "integer"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "description": "API authentication key",
+        "name": "x-api-key",
+        "in": "header"
+      },
+      "UserAuth": {
+        "type": "apiKey",
+        "description": "User's account email",
+        "name": "user",
+        "in": "header"
+      }
+    },
+    "responses": {
+      "VersionResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/VersionResponse"
+            }
+          }
+        }
+      },
+      "DataResponse": {
+        "description": "",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/DataResponse"
+            }
+          }
+        }
+      },
+      "SuccessResponse": {
+        "description": "Succesful response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "string",
+                  "example": "OK"
+                }
+              }
+            }
+          }
+        }
+      },
+      "BadRequest": {
+        "description": "Bad Request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Bad Request"
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
