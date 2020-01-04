@@ -12,8 +12,20 @@
   },
   "servers": [
     {
+      "url": "https://api-eu.getdatapipe.com/v1",
+      "description": "EU - London"
+    },
+    {
+      "url": "https://api-us.getdatapipe.com/v1",
+      "description": "USA - N. Virginia"
+    },
+    {
+      "url": "https://api-au.getdatapipe.com/v1",
+      "description": "Asia Pacific - Sydney"
+    },
+    {
       "url": "https://api.getdatapipe.com/v1",
-      "description": "Production"
+      "description": "CDN Optimized"
     }
   ],
   "tags": [
