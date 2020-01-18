@@ -8,7 +8,7 @@
       "email": "richard@getdatapipe.com",
       "url": "https://www.getdatapipe.com/contact"
     },
-    "version": "1.0.0"
+    "version": "1.12.x"
   },
   "servers": [
     {
@@ -17,15 +17,15 @@
     },
     {
       "url": "https://api-eu.getdatapipe.com/v1",
-      "description": "EU - London"
+      "description": "Europe (London)"
     },
     {
       "url": "https://api-us.getdatapipe.com/v1",
-      "description": "USA - N. Virginia"
+      "description": "North America (N. Virginia)"
     },
     {
       "url": "https://api-au.getdatapipe.com/v1",
-      "description": "Asia Pacific - Sydney"
+      "description": "Asia Pacific (Sydney)"
     }
   ],
   "tags": [
@@ -189,13 +189,17 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "sheetId": {
+                  "spreadsheetId": {
                     "type": "string",
-                    "description": "Google Sheet ID"
+                    "description": "Google Spread Sheet ID"
+                  },
+                  "sheetId": {
+                    "type": "number",
+                    "description": "Sheet ID"
                   }
                 },
                 "required": [
-                  "sheetId"
+                  "spreadsheetId"
                 ]
               }
             }
