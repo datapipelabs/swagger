@@ -118,11 +118,18 @@
         ],
         "requestBody": {
           "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
             "multipart/form-data": {
               "schema": {
                 "required": [
                   "file"
                 ],
+                "type": "object",
                 "properties": {
                   "file": {
                     "type": "string",
